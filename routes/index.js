@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { supabasePublic, supabaseService } = require('../index');
+const { supabasePublic, supabaseService } = require('../config/supabase');
 const jwt = require('jsonwebtoken');
 
 // Middleware to verify JWT
@@ -34,7 +34,7 @@ router.post('/agents', verifyToken, async (req, res) => {
   const { data: userRole, error: roleError } = await supabasePublic
     .from('user_roles')
     .select('role')
-    .eq('user_id', user.sub) // 'sub' is typically the user ID in JWT
+    .eq('user_id', user.sub)
     .single();
 
   if (roleError || userRole.role !== 'admin') {
@@ -65,7 +65,7 @@ router.get('/profile', verifyToken, async (req, res) => {
   res.json(data);
 });
 
-// Login endpoint to generate JWT (example)
+// Login endpoint to generate JWT
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   const { data, error } = await supabasePublic.auth.signInWithPassword({ email, password });

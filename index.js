@@ -12,6 +12,12 @@ const supabaseService = createClient(process.env.SUPABASE_URL, process.env.SUPAB
 // Middleware
 app.use(express.json());
 
+// Default route
+app.get('/', (req, res) => {
+  res.redirect('/api/agents'); // Redirect to agents endpoint or send a welcome message
+  // Or: res.send('Welcome to AgentPlate!');
+});
+
 // Routes
 const routes = require('./routes');
 app.use('/api', routes);
@@ -26,4 +32,4 @@ app.listen(port, () => {
   console.log(`AgentPlate running on http://localhost:${port}`);
 });
 
-module.exports = { supabasePublic, supabaseService };
+module.exports = { supabasePublic, supabaseService }; // Export clients
